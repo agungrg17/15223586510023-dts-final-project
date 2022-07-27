@@ -1,117 +1,215 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import { auth } from "../config/firebase";
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Modal,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import { registerWithEmailAndPassword } from "../config/firebase";
+import Logo from "../assets/Logo.svg";
 
-function Register() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isPasswordShown, setIsPasswordShown] = useState(false);
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "#141414",
+  border: "2px solid red",
+  boxShadow: 24,
+  p: 4,
+  color: "white",
+  display: "flex",
+  flexDirection: "column",
+  textAlign: "center",
+};
+
+const Register = () => {
   const navigate = useNavigate();
 
-  const provider = new GoogleAuthProvider();
-  const signInWithGoogle = () => signInWithPopup(auth, provider);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-
-    try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      navigate("/");
-      return user;
-    } catch (error) {
-      let errMessage = "There was an error";
-      const sanitizeErrMsg = error.message.split("/")[1].split(")")[0];
-
-      if (sanitizeErrMsg === "weak-password") {
-        errMessage = "Password should be at least 6 characters";
-      }
-
-      if (sanitizeErrMsg === "email-already-in-use") {
-        errMessage = "Email already in use";
-      }
-
-      setErrorMessage(`* ${errMessage}`);
+    console.log({
+      name: `${data.get("firstName")} ${data.get("lastName")}`,
+      email: data.get("email"),
+      password: data.get("password"),
+    });
+    const err = await registerWithEmailAndPassword(
+      `${data.get("firstName")} ${data.get("lastName")}`,
+      data.get("email"),
+      data.get("password")
+    );
+    if (err) {
+      handleOpen();
     }
   };
 
   return (
-    <div className="flex flex-col items-center my-32 gap-10">
-      <div className="flex flex-col gap-3 w-full max-w-md">
-        <p className="text-2xl mb-4 text-center">REGISTER</p>
-
-        <button
-          onClick={signInWithGoogle}
-          type="submit"
-          className="bg-zinc-100 hover:bg-zinc-200 text-zinc-900 p-3 rounded-sm flex items-center justify-center gap-3"
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          <img src="/ic_google.svg" alt="" className="w-6" />
-          Sign Up With Google
-        </button>
-        <div className="text-center my-6 relative flex justify-center">
-          <div className="absolute top-0 left-0 right-0 h-full w-full flex items-center">
-            <hr className="w-full border-zinc-500" />
-          </div>
-          <p className="bg-zinc-900 px-4 z-20 text-zinc-500">or</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-            className="bg-zinc-900 border border-zinc-500 p-3 rounded-sm"
-          />
-          <div className="relative">
-            <input
-              type={isPasswordShown ? "text" : "password"}
-              name="password"
-              placeholder="Password"
-              required
-              className="bg-zinc-900 border border-zinc-500 p-3 rounded-sm w-full"
+          <Link onClick={() => navigate("/")} component="button">
+            <Box
+              component="img"
+              sx={{
+                width: "5rem",
+                marginBottom: "1rem",
+              }}
+              src={Logo}
             />
-            <div className="absolute top-0 right-2 h-full flex items-center">
-              <img
-                onClick={() => setIsPasswordShown(!isPasswordShown)}
-                src={isPasswordShown ? "/ic_eyeoff.svg" : "/ic_eye.svg"}
-                alt="hide"
-                className="p-2 cursor-pointer bg-zinc-900"
-              />
-            </div>
-          </div>
-
-          {errorMessage && <p className="text-red-400">{errorMessage}</p>}
-          <button
-            type="submit"
-            className="bg-red-700 hover:bg-red-800 p-3 rounded-sm"
-          >
-            Register
-          </button>
-        </form>
-        <p>
-          Already have account?{" "}
-          <Link to="/login">
-            <u>Login</u>
           </Link>
-        </p>
-      </div>
-    </div>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Box
+            component="form"
+            noValidate={false}
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-name"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
+                  label="I want to receive inspiration, marketing promotions and updates via email."
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link
+                  component="button"
+                  variant="body2"
+                  onClick={() => navigate("/login")}
+                >
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 5 }} />
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-description" sx={{ mb: 5 }}>
+              The email address or password is incorrect. Please retry...
+            </Typography>
+            <Button
+              color="error"
+              variant="contained"
+              onClick={() => {
+                handleClose();
+              }}
+            >
+              Retry
+            </Button>
+          </Box>
+        </Modal>
+      </Container>
+    </ThemeProvider>
   );
 }
 
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Movies. All Rights Reserved
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
 export default Register;

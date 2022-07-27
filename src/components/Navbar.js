@@ -1,131 +1,439 @@
-import { signOut } from "firebase/auth";
+// import { signOut } from "firebase/auth";
+// import React, { useState } from "react";
+// import { Link, useNavigate, NavLink } from "react-router-dom";
+// import { auth } from "../config/firebase";
+// import { useAuthState } from "react-firebase-hooks/auth";
+
+// const Navbar = () => {
+//   const [toggleLogout, setToggleLogout] = useState(false);
+//   const navigate = useNavigate();
+//   const [user] = useAuthState(auth);
+//   const username = user?.displayName
+//     ? user?.displayName
+//     : user?.email.split("@")[0];
+//   const userPicture = user?.photoURL ? user?.photoURL : "/profile_image.png";
+//   const [searchQuery, setSearchQuery] = useState("");
+
+//   const navItems = [
+//     { text: "Home", link: "/" },
+//     { text: "Series", link: "/tvseries" },
+//     { text: "Movies", link: "/movies" },
+//     { text: "New & Popular", link: "/newpopular" },
+//     { text: "My List", link: "/mylist" },
+//   ];
+
+//   const onLogout = async () => {
+//     try {
+//       await signOut(auth);
+//       setToggleLogout(false);
+//       navigate("/login");
+//     } catch (error) {
+//       <p>{error.message}</p>;
+//     }
+//   };
+
+//   const handleInputSearch = async (e) => {
+//     e.key === "Enter" && navigate(`/search/${searchQuery}/1`);
+//   };
+
+//   const handleSearch = async () => {
+//     navigate(`/search/${searchQuery}/1`);
+//   };
+
+//   return (
+//     <div className="fixed top-0 left-0 right-0 w-full bg-zinc-900 z-50 py-4 flex items-center justify-between">
+//       <div className="container flex justify-between items-center">
+//         <section className="header-left flex gap-8 items-center">
+//           <Link to="/">
+//             <img
+//               src="/logo.png"
+//               alt="Movies Logo"
+//               className="w-10 rounded-sm"
+//             />
+//           </Link>
+
+//           <div className="navigation flex gap-6">
+//             {navItems.map((item) => (
+//               <NavLink
+//                 key={item.text}
+//                 to={item.link}
+//                 className={({ isActive }) =>
+//                   isActive ? "nav-active" : "text-zinc-400"
+//                 }
+//               >
+//                 {item.text}
+//               </NavLink>
+//             ))}
+//           </div>
+//         </section>
+
+//         <section className="header-right flex gap-4">
+//           <div className="flex items-center relative">
+//             <input
+//               onChange={(e) => setSearchQuery(e.target.value)}
+//               onKeyUp={(e) => handleInputSearch(e)}
+//               type="text"
+//               placeholder="Search Movie"
+//               className="p-2 bg-zinc-900 border border-zinc-500 rounded-sm"
+//             />
+//             <button
+//               onClick={handleSearch}
+//               className="absolute right-1 p-2 bg-zinc-900"
+//             >
+//               <img src="/ic_search.svg" alt="Icon Search" />
+//             </button>
+//           </div>
+
+//           {user ? (
+//             <button className="relative">
+//               <div
+//                 onClick={() => setToggleLogout(!toggleLogout)}
+//                 className="cursor-pointer flex items-center gap-2 "
+//               >
+//                 <p>{username}</p>
+//                 <img
+//                   src={userPicture}
+//                   alt="Profile"
+//                   className="w-7 rounded-sm"
+//                 />
+//                 <img
+//                   src="/ic_arrow_down.svg"
+//                   alt="Icon Arrow Down"
+//                   className="scale-90"
+//                 />
+//               </div>
+
+//               <div
+//                 onClick={onLogout}
+//                 className={
+//                   toggleLogout
+//                     ? "absolute right-0 top-10 bg-zinc-800 py-2 px-4"
+//                     : "hidden"
+//                 }
+//               >
+//                 Logout
+//               </div>
+//             </button>
+//           ) : (
+//             <Link
+//               to="/login"
+//               className="bg-red-700 hover:bg-red-800 py-2 px-4 rounded-sm"
+//             >
+//               Login
+//             </Link>
+//           )}
+//         </section>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Navbar;
+
 import React, { useState } from "react";
-import { Link, useNavigate, NavLink } from "react-router-dom";
-import { auth } from "../config/firebase";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+  Link,
+  Modal,
+} from "@mui/material";
+import UserIcon from "../assets/UserIcon.svg";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import MenuIcon from "@mui/icons-material/Menu";
+import Logo from "../assets/Logo.svg";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+import { logOut, auth } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import SeacrhInput from "./SearchInput";
+const pages = [
+  { title: "Home", nav: "/" },
+  { title: "Series", nav: "/tvseries" },
+  { title: "Movies", nav: "/movies" },
+  { title: "New and Popular", nav: "/new-and-popular" },
+  { title: "My List", nav: "/mylist" },
+];
+
+const settings = [
+  { title: "Profile" },
+  { title: "Account" },
+  { title: "Dashboard" },
+  { title: "Logout", nav: logOut },
+];
+const theme = createTheme({
+  components: {
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          padding: "0 0.5rem",
+        },
+      },
+    },
+  },
+});
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "#141414",
+  border: "2px solid red",
+  boxShadow: 24,
+  p: 4,
+  color: "white",
+  display: "flex",
+  flexDirection: "column",
+  textAlign: "center",
+};
 
 const Navbar = () => {
-  const [toggleLogout, setToggleLogout] = useState(false);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
-  const [user] = useAuthState(auth);
-  const username = user?.displayName
-    ? user?.displayName
-    : user?.email.split("@")[0];
-  const userPicture = user?.photoURL ? user?.photoURL : "/profile_image.png";
-  const [searchQuery, setSearchQuery] = useState("");
+  const [user, loading] = useAuthState(auth);
 
-  const navItems = [
-    { text: "Home", link: "/" },
-    { text: "Series", link: "/tvseries" },
-    { text: "Movies", link: "/movies" },
-    { text: "New & Popular", link: "/newpopular" },
-    { text: "My List", link: "/mylist" },
-  ];
-
-  const onLogout = async () => {
-    try {
-      await signOut(auth);
-      setToggleLogout(false);
-      navigate("/login");
-    } catch (error) {
-      <p>{error.message}</p>;
-    }
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
   };
 
-  const handleInputSearch = async (e) => {
-    e.key === "Enter" && navigate(`/search/${searchQuery}/1`);
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
   };
 
-  const handleSearch = async () => {
-    navigate(`/search/${searchQuery}/1`);
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
-    <div className="fixed top-0 left-0 right-0 w-full bg-zinc-900 z-50 py-4 flex items-center justify-between">
-      <div className="container flex justify-between items-center">
-        <section className="header-left flex gap-8 items-center">
-          <Link to="/">
-            <img
-              src="/logo.png"
-              alt="Movies Logo"
-              className="w-10 rounded-sm"
+    <AppBar
+      position="fixed"
+      sx={{
+        backgroundColor: "#141414",
+        maxHeight: "94px",
+        padding: "0 1.5rem",
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Link component="button" onClick={() => navigate("/")}>
+            <Box
+              component="img"
+              sx={{
+                display: { xs: "none", md: "flex" },
+                marginRight: {
+                  xs: "10rem",
+                },
+              }}
+              src={Logo}
             />
           </Link>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: "block", md: "none" },
+              }}
+            >
+              {pages.map((page, id) => (
+                <MenuItem key={id} onClick={() => navigate(page.nav)}>
+                  <Typography textAlign="center">{page.title}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <Box
+            component="img"
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              textDecoration: "none",
+            }}
+            src={Logo}
+          />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href=""
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          ></Typography>
 
-          <div className="navigation flex gap-6">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.text}
-                to={item.link}
-                className={({ isActive }) =>
-                  isActive ? "nav-active" : "text-zinc-400"
-                }
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            {pages.map((page, id) => (
+              <Button
+                key={id}
+                onClick={() => navigate(page.nav)}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                  textTransform: "none",
+                }}
               >
-                {item.text}
-              </NavLink>
+                {page.title}
+              </Button>
             ))}
-          </div>
-        </section>
-
-        <section className="header-right flex gap-4">
-          <div className="flex items-center relative">
-            <input
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyUp={(e) => handleInputSearch(e)}
-              type="text"
-              placeholder="Search Movie"
-              className="p-2 bg-zinc-900 border border-zinc-500 rounded-sm"
-            />
-            <button
-              onClick={handleSearch}
-              className="absolute right-1 p-2 bg-zinc-900"
-            >
-              <img src="/ic_search.svg" alt="Icon Search" />
-            </button>
-          </div>
-
-          {user ? (
-            <button className="relative">
-              <div
-                onClick={() => setToggleLogout(!toggleLogout)}
-                className="cursor-pointer flex items-center gap-2 "
+          </Box>
+          {loading ? null : user ? (
+            <Box sx={{ flexGrow: 0, display: "flex", alignItems: "center" }}>
+              <Box
+                sx={{
+                  marginRight: "1rem",
+                  display: { lg: "flex", xs: "none" },
+                  alignItems: "center",
+                }}
               >
-                <p>{username}</p>
-                <img
-                  src={userPicture}
-                  alt="Profile"
-                  className="w-7 rounded-sm"
-                />
-                <img
-                  src="/ic_arrow_down.svg"
-                  alt="Icon Arrow Down"
-                  className="scale-90"
-                />
-              </div>
-
-              <div
-                onClick={onLogout}
-                className={
-                  toggleLogout
-                    ? "absolute right-0 top-10 bg-zinc-800 py-2 px-4"
-                    : "hidden"
-                }
+                <SeacrhInput />
+                <ThemeProvider theme={theme}>
+                  <IconButton
+                    size="large"
+                    aria-label="notifications"
+                    color="inherit"
+                  >
+                    <NotificationsIcon />
+                  </IconButton>
+                  <IconButton
+                    size="large"
+                    aria-label="GifBoxTwoTone"
+                    color="inherit"
+                  >
+                    <CardGiftcardIcon></CardGiftcardIcon>
+                  </IconButton>
+                </ThemeProvider>
+              </Box>
+              <Typography
+                sx={{
+                  display: { md: "inline", xs: "none" },
+                  mr: 1,
+                  fontSize: "0.9rem",
+                }}
               >
-                Logout
-              </div>
-            </button>
+                {user.displayName.split(" ")[0]}
+              </Typography>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src={UserIcon} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting.title}
+                    onClick={
+                      setting.nav
+                        ? () => {
+                            handleOpen();
+                            handleCloseUserMenu();
+                          }
+                        : handleCloseUserMenu
+                    }
+                  >
+                    <Typography textAlign="center">{setting.title}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
           ) : (
-            <Link
-              to="/login"
-              className="bg-red-700 hover:bg-red-800 py-2 px-4 rounded-sm"
+            <Button
+              color="error"
+              variant="contained"
+              sx={{ textTransform: "none", px: 5, borderRadius: 0 }}
+              onClick={() => navigate("/login")}
             >
-              Login
-            </Link>
+              Sign In
+            </Button>
           )}
-        </section>
-      </div>
-    </div>
+        </Toolbar>
+      </Container>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-description" sx={{ mb: 5 }}>
+            Are you sure want to Quit?
+          </Typography>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={() => {
+              handleClose();
+              logOut();
+            }}
+          >
+            Yeah, Im Sure
+          </Button>
+        </Box>
+      </Modal>
+    </AppBar>
   );
 }
-
 export default Navbar;
+

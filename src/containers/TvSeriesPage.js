@@ -2,64 +2,75 @@ import React from "react";
 import CarouselBox from "../components/Carousel";
 import HeroBanner from "../components/HeroBanner";
 import MovieList from "../components/MovieList";
-// import Navbar from "../components/Navbar";
-// import Footer from "../components/Footer";
+//import Navbar from "../components/Navbar";
+//import Footer from "../components/Footer";
 import {
   useGetPopularQuery,
   useGetTopRatedQuery,
   useGetTrendingQuery,
-  useGetUpcomingQuery,
+  useGetTvAiringTodayQuery,
+  useGetTvOnTheAirQuery,
 } from "../services/ApiSlice";
+import { Typography } from "@mui/material";
 
-const HomePage = () => {
-  const { data: trendingAllsData } = useGetTrendingQuery({ media_type: "all" });
-  const { data: popularMoviesData } = useGetPopularQuery({
-    media_type: "movie",
+const TvSeriesPage = () => {
+
+  const { data: trendingSeriesData } = useGetTrendingQuery({
+    media_type: "tv",
   });
-  const { data: popularSeriesData } = useGetPopularQuery({ media_type: "tv" });
-  const { data: upcomingMoviesData } = useGetUpcomingQuery({
-    media_type: "movie",
+  const { data: popularSeriesData } = useGetPopularQuery({
+    media_type: "tv",
   });
   const { data: topRatedSeriesData } = useGetTopRatedQuery({
     media_type: "tv",
   });
+  const { data: tvOnTheAirData } = useGetTvOnTheAirQuery();
+  const { data: tvAiringTodayData } = useGetTvAiringTodayQuery();
+
 
   return (
     <>
       {/* <Navbar></Navbar> */}
       <section style={{ margin: "5rem 3rem 0" }}>
+        <Typography
+          variant="h4"
+          color="white"
+          sx={{ fontWeight: "500", mb: "1rem" }}
+        >
+          TV Series
+        </Typography>
         <CarouselBox>
-          {trendingAllsData?.results?.map((data, i) => (
+          {trendingSeriesData?.results?.map((data, i) => (
             <HeroBanner key={i} data={data} />
           ))}
         </CarouselBox>
       </section>
       <section style={{ margin: "3rem 3rem 0" }}>
         <MovieList
-          categoryName="Popular Movies"
-          data={popularMoviesData?.results}
-        ></MovieList>
-      </section>
-      <section style={{ margin: "3rem 3rem 0" }}>
-        <MovieList
-          categoryName="TV Seasons / Series"
+          categoryName="Popular"
           data={popularSeriesData?.results}
         ></MovieList>
       </section>
       <section style={{ margin: "3rem 3rem 0" }}>
         <MovieList
-          categoryName="Top Rated TV Seasons / Series"
+          categoryName="Top Rated"
           data={topRatedSeriesData?.results}
         ></MovieList>
       </section>
       <section style={{ margin: "3rem 3rem 0" }}>
         <MovieList
-          categoryName="Upcoming Movies"
-          data={upcomingMoviesData?.results}
+          categoryName="Tv On The Air "
+          data={tvOnTheAirData?.results}
+        ></MovieList>
+      </section>
+      <section style={{ margin: "3rem 3rem 0" }}>
+        <MovieList
+          categoryName="Tv Airing Today"
+          data={tvAiringTodayData?.results}
         ></MovieList>
       </section>
       {/* <Footer></Footer> */}
     </>
   );
 }
-export default HomePage
+export default TvSeriesPage;

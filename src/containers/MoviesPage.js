@@ -5,29 +5,43 @@ import MovieList from "../components/MovieList";
 // import Navbar from "../components/Navbar";
 // import Footer from "../components/Footer";
 import {
+  useGetLatestQuery,
   useGetPopularQuery,
   useGetTopRatedQuery,
   useGetTrendingQuery,
   useGetUpcomingQuery,
 } from "../services/ApiSlice";
+import { Typography } from "@mui/material";
 
-const HomePage = () => {
-  const { data: trendingAllsData } = useGetTrendingQuery({ media_type: "all" });
+const Moviespage = () => {
+
+  const { data: trendingAllsData } = useGetTrendingQuery({
+    media_type: "movie",
+  });
+  const { data: latestMoviesData } = useGetLatestQuery({
+    media_type: "movie",
+  });
   const { data: popularMoviesData } = useGetPopularQuery({
     media_type: "movie",
   });
-  const { data: popularSeriesData } = useGetPopularQuery({ media_type: "tv" });
-  const { data: upcomingMoviesData } = useGetUpcomingQuery({
+  const { data: topRatedMoviesData } = useGetTopRatedQuery({
     media_type: "movie",
   });
-  const { data: topRatedSeriesData } = useGetTopRatedQuery({
-    media_type: "tv",
+  const { data: upcomingMoviesData } = useGetUpcomingQuery({
+    media_type: "movie",
   });
 
   return (
     <>
       {/* <Navbar></Navbar> */}
       <section style={{ margin: "5rem 3rem 0" }}>
+        <Typography
+          variant="h4"
+          color="white"
+          sx={{ fontWeight: "500", mb: "1rem" }}
+        >
+          Movies
+        </Typography>
         <CarouselBox>
           {trendingAllsData?.results?.map((data, i) => (
             <HeroBanner key={i} data={data} />
@@ -36,25 +50,25 @@ const HomePage = () => {
       </section>
       <section style={{ margin: "3rem 3rem 0" }}>
         <MovieList
-          categoryName="Popular Movies"
+          categoryName="Popular"
           data={popularMoviesData?.results}
         ></MovieList>
       </section>
       <section style={{ margin: "3rem 3rem 0" }}>
         <MovieList
-          categoryName="TV Seasons / Series"
-          data={popularSeriesData?.results}
+          categoryName="Top Rated"
+          data={topRatedMoviesData?.results}
         ></MovieList>
       </section>
       <section style={{ margin: "3rem 3rem 0" }}>
         <MovieList
-          categoryName="Top Rated TV Seasons / Series"
-          data={topRatedSeriesData?.results}
+          categoryName="Latest"
+          data={latestMoviesData?.results}
         ></MovieList>
       </section>
       <section style={{ margin: "3rem 3rem 0" }}>
         <MovieList
-          categoryName="Upcoming Movies"
+          categoryName="Upcoming"
           data={upcomingMoviesData?.results}
         ></MovieList>
       </section>
@@ -62,4 +76,4 @@ const HomePage = () => {
     </>
   );
 }
-export default HomePage
+export default Moviespage;
