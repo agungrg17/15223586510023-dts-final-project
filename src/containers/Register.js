@@ -12,16 +12,10 @@ import {
   Container,
   Modal,
 } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { registerWithEmailAndPassword } from "../config/firebase";
-import Logo from "../assets/Logo.svg";
-
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+import themes from '../themes/themes'
 
 const style = {
   position: "absolute",
@@ -29,8 +23,8 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "#141414",
-  border: "2px solid red",
+  bgcolor: "#f6dbf3",
+  border: "2px solid grey",
   boxShadow: 24,
   p: 4,
   color: "white",
@@ -65,30 +59,22 @@ const Register = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themes}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 10,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
           <Link onClick={() => navigate("/")} component="button">
-            <Box
-              component="img"
-              sx={{
-                width: "5rem",
-                marginBottom: "1rem",
-              }}
-              src={Logo}
-            />
-          </Link>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+          </Link>
           <Box
             component="form"
             noValidate={false}
@@ -161,6 +147,9 @@ const Register = () => {
                   component="button"
                   variant="body2"
                   onClick={() => navigate("/login")}
+                  sx={{
+                    color: "black",
+                    }}
                 >
                   Already have an account? Sign in
                 </Link>
@@ -205,7 +194,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Movies. All Rights Reserved
+        Recipes. All Rights Reserved
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

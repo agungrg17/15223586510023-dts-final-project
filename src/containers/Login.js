@@ -12,17 +12,18 @@ import {
   Grid,
   Modal,
 } from "@mui/material";
-import Logo from "../assets/Logo.svg";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+//import Logo from "../assets/Logo.svg";
+import { ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
 import { signInWithGoogle, logInWithEmailAndPassword } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
+import themes from '../themes/themes'
 
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     mode: "dark",
+//   },
+// });
 
 const style = {
   position: "absolute",
@@ -30,8 +31,8 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "#141414",
-  border: "2px solid red",
+  bgcolor: "#f6dbf3",
+  border: "2px solid grey",
   boxShadow: 24,
   p: 4,
   color: "white",
@@ -61,8 +62,12 @@ const Login = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+    <ThemeProvider theme={themes}>
+      <Grid container component="main" 
+        sx={{ 
+            height: "90vh", 
+            marginTop: 11, 
+            marginBottom: -14 }}>
         <CssBaseline />
         <Grid
           item
@@ -71,7 +76,7 @@ const Login = () => {
           md={7}
           sx={{
             backgroundImage:
-              "url(https://images.unsplash.com/photo-1643208589889-0735ad7218f0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80)",
+              "url(https://img.freepik.com/free-vector/cute-bakery-chef-girl-smiling-uniform-mascots-cartoon-art-illustration_56104-571.jpg?w=996&t=st=1659499489~exp=1659500089~hmac=234589a5e1fa22386e40137e9e6bc8834901e95472265c8dd71b3c15921ffbfd)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -91,19 +96,16 @@ const Login = () => {
               alignItems: "center",
             }}
           >
-            <Link onClick={() => navigate("/")} component="button">
-              <Box
-                component="img"
+            <Link onClick={() => navigate("/")} component="button">            
+            <Typography 
+                component="h1" 
+                variant="h5"
                 sx={{
-                  width: "5rem",
-                  marginBottom: "1rem",
-                }}
-                src={Logo}
-              />
-            </Link>
-            <Typography component="h1" variant="h5">
+                  color: "black",
+                  }}>
               Sign in
             </Typography>
+            </Link>
             <Box
               component="form"
               noValidate={false}
@@ -156,13 +158,22 @@ const Login = () => {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link variant="body2">Forgot password?</Link>
+                  <Link 
+                  variant="body2"
+                  sx={{
+                    color: "black",
+                    }}>
+                    Forgot password?
+                  </Link>
                 </Grid>
                 <Grid item>
                   <Link
                     variant="body2"
                     component="button"
                     onClick={() => navigate("/register")}
+                    sx={{
+                        color: "black",
+                        }}
                   >
                     {"Don't have an account? Sign Up"}
                   </Link>
@@ -179,7 +190,11 @@ const Login = () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-description" sx={{ mb: 5 }}>
+            <Typography id="modal-modal-description" 
+                sx={{ 
+                    mb: 5,
+                    color: "black" 
+                    }}>
               The email address or password is incorrect. Please retry...
             </Typography>
             <Button
@@ -188,6 +203,9 @@ const Login = () => {
               onClick={() => {
                 handleClose();
               }}
+              sx={{
+                color: "black",
+                }}
             >
               Retry
             </Button>
@@ -208,7 +226,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Movies. All Rights Reserved
+        Recipes. All Rights Reserved
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

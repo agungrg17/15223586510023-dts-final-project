@@ -1,21 +1,16 @@
-import { AccessTimeFilledOutlined, RestaurantMenuOutlined, ThumbUpOffAltOutlined } from "@mui/icons-material";
 import {
   Box,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
-  Chip,
   Stack,
   Typography,
-  Button
 } from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 
-const HeroBanner = ({data}) => {
-  const navigate = useNavigate();
+const Banner = ({data}) => {
+    const img = "https://img.freepik.com/free-photo/concept-cooking-cake-pie-top-view_185193-80492.jpg?w=1380&t=st=1659505037~exp=1659505637~hmac=fec387f12c27145178d3cd0daeb8b7925d366b31ea12e91f0e26011668355221"
 
   return (
     <>
@@ -23,29 +18,31 @@ const HeroBanner = ({data}) => {
         display: "flex", 
         marginTop: "5rem",
         flexDirection: "column"}} 
-        key={data.key}>
+    >
     <Card
       sx={{
         marginY: 5,
-        boxShadow: "none",
+        // boxShadow: "none",
         background: "#f6dbf3",
-        borderRadius: "30px",
+        borderRadius: "10px",
         minHeight: "400px",
         display: "flex",
         width: "100%",
       }}
       
     >
-      <Box sx={{ display: "flex", flexDirection: "column", padding: 5 }}>
-        <CardContent sx={{ flex: "1 0 auto" }}>
-          <Stack spacing={3}>
+      <Box sx={{ display: "flex", flexDirection: "column", padding: 2 }}>
+        <CardContent sx={{ flex: "1 0 auto", justifyContent: "center" }}>
+          <Stack spacing={4}>
             <Typography variant="h3" fontWeight="600">
-              {data.title.replace("Resep", "").split(",")[0]}
+              Temukan Resep Favoritmu
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-              {data.title}
+            <Typography variant="h5" color="text.secondary">
+              Semua bisa memasak dengan mengikuti resep terbaik<br/>
+              Mudah diikuti dan diterapkan siapa saja<br/>
+              Tidak harus menjadi koki profesional untuk bisa memasak
             </Typography>
-            <Stack direction="row" spacing={2}>
+            {/* <Stack direction="row" spacing={2}>
               <Chip sx={{
                   background: "lightpink"
               }}
@@ -58,10 +55,10 @@ const HeroBanner = ({data}) => {
               background: "lightpink"
               }}
               icon={<AccessTimeFilledOutlined />} label={data.times} />
-            </Stack>
+            </Stack> */}
           </Stack>
         </CardContent>
-        <CardActions>
+        {/* <CardActions>
           <Stack
             sx={{ width: "100%", paddingX: 1 }}
             direction="row"
@@ -70,44 +67,14 @@ const HeroBanner = ({data}) => {
             flexWrap="wrap"
             rowGap={2}
           >
-            {/* <Stack direction="row" spacing={2} alignItems="center">
-              <Avatar
-                alt={author.user}
-                src="https://i.pravatar.cc/100?img=61"
-                sx={{ width: "56px", height: "56px" }}
-              />
-              <Stack>
-                <Typography variant="subtitle1" color="text.secondary">
-                  {author.user}
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary">
-                  {author.datePublished}
-                </Typography>
-              </Stack>
-            </Stack> */}
-            <Button
-              variant="contained"
-              sx={{ 
-                  height: "60px", 
-                  textTransform: "none", 
-                  paddingX: 5 , 
-                  background: "lightpink",
-              }}
-              // endIcon={<PlayCircleFilled />}
-              onClick={() => {
-                navigate(`recipes/${data.key}`);
-              }}
-            >
-              Lihat Resep
-            </Button>
           </Stack>
-        </CardActions>
+        </CardActions> */}
       </Box>
       <CardMedia
         component="img"
         sx={{ width: "50%" }}
-        image={data.thumb}
-        alt={data.key}
+        image={img}
+        alt="gambar"
       />
     </Card>
     </Box>   
@@ -115,7 +82,7 @@ const HeroBanner = ({data}) => {
   );
 };
 
-export default HeroBanner;
+export default Banner;
 
 
 
