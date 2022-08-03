@@ -23,8 +23,7 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCNhbEN0KmZtGK-7qr7phYaZ7udllW1eIs",
-  // apiKey: process.env.REACT_APP_FIREBASE_KEY,
+  apiKey: process.env.REACT_APP_FIREBASE_KEY,
   authDomain: "final-project-dts-news.firebaseapp.com",
   projectId: "final-project-dts-news",
   storageBucket: "final-project-dts-news.appspot.com",
