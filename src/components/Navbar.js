@@ -1,6 +1,6 @@
 import { 
   MicrowaveOutlined, 
-  Login, 
+  Login,
 } from '@mui/icons-material';
 import MenuIcon from "@mui/icons-material/Menu";
 import { 
@@ -22,22 +22,17 @@ import {
  import { useAuthState } from 'react-firebase-hooks/auth';
  import { logOut, auth } from "../config/firebase.js";
 
-
  const NavbarMenu = [
   {
     menu: "Beranda",
     page: "/",
   },
   {
-    menu: "Kategori",
-    page: "/category",
+    menu: "Explore",
+    page: "/search",
   },
   {
-    menu: "Artikel",
-    page: "/article",
-  },
-  {
-    menu: "Tentang Kami",
+    menu: "About",
     page: "/about",
   },
 ];
@@ -69,7 +64,6 @@ const handleCloseUserMenu = () => {
 
 return (
   <AppBar
-    // color="transparent"
     position="fixed"
     >
     <Box
@@ -99,7 +93,6 @@ return (
         >
           ResepMasak
         </Typography>
-
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
           <IconButton
             size="large"
@@ -146,25 +139,6 @@ return (
         <MicrowaveOutlined
           sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
         />
-        <Typography
-          variant="h5"
-          noWrap
-          component="a"
-          onClick={() => {
-            navigate("/");
-          }}
-          sx={{
-            mr: 2,
-            display: { xs: "flex", md: "none" },
-            flexGrow: 1,
-            fontWeight: 600,
-            letterSpacing: ".3rem",
-            color: "inherit",
-            textDecoration: "none",
-          }}
-        >
-          ResepMasak
-        </Typography>
         <Box
           sx={{
             flexGrow: 1,
@@ -193,7 +167,6 @@ return (
             </Button>
           ))}
         </Box>
-
         <Box sx={{ flexGrow: 0 }}>
           {!user ? (
             <Button
@@ -214,12 +187,11 @@ return (
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   alt="Profile "
-                  src="https://i.pravatar.cc/150?img=68"
+                  src="https://i.pravatar.cc/150?img=17"
                 />
               </IconButton>
             </Tooltip>
           )}
-
           <Menu
             sx={{ mt: "45px" }}
             id="menu-appbar"
@@ -239,10 +211,8 @@ return (
             {user && (
               <MenuItem>
                 <Typography> {user.email.split("@")[0]}</Typography>
-                {/* <Typography> {user.email}</Typography> */}
               </MenuItem>
             )}
-
             {settings.map((setting) => (
               <MenuItem
                 key={setting.menu}

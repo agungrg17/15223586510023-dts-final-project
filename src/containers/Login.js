@@ -12,18 +12,11 @@ import {
   Grid,
   Modal,
 } from "@mui/material";
-//import Logo from "../assets/Logo.svg";
 import { ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
 import { signInWithGoogle, logInWithEmailAndPassword } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
 import themes from '../themes/themes'
-
-// const theme = createTheme({
-//   palette: {
-//     mode: "dark",
-//   },
-// });
 
 const style = {
   position: "absolute",

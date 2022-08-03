@@ -19,11 +19,6 @@ const base = createTheme({
   shape: {
     borderRadius: 16,
   },
-//   props: {
-//     MuiAppBar: {
-//       color: "transparent",
-//     },
-//   },
 });
 
 const theme = responsiveFontSizes(base);

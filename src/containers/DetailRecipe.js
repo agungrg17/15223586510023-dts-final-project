@@ -52,8 +52,7 @@ const DetailRecipe = () => {
           </Container>
         );
       }
-    
-      console.log(response.results);
+
       const { 
                 author, 
                 desc, 
@@ -177,16 +176,6 @@ const DetailRecipe = () => {
                         </Typography>
                         <ListForRecipe data={step} />
                     </Box>
-                    {/* <Typography
-                    fontWeight={600}
-                    variant="h4"
-                    sx={{
-                        marginBottom: 3,
-                    }}
-                    >
-                    Other Recipe
-                    </Typography> */}
-                    {/* <OtherRecipes /> */}
                 </Grid>
             </Grid>
             <Box>

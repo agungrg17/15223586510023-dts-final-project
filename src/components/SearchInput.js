@@ -1,3 +1,81 @@
+import React from 'react';
+import { SearchOutlined } from '@mui/icons-material';
+import { useState } from 'react';
+// import recipesApi from '../apis/RecipesApi';
+import { useNavigate } from "react-router-dom";
+// import {
+//     Alert,
+//     AlertTitle,
+//   } from "@mui/material";
+// import SearchRecipe from '../containers/SearchRecipe';
+
+const SearchInput = () => {
+    const [inputSearch, setInputSearch] = useState("");
+	const navigate = useNavigate();
+    // const [input, setInput] = useState("");
+    // const [query, setQuery] = useState("");
+    // const [searchRecipes, setSearchRecipes] = useState([]);
+    // const [error, setError] = useState("");
+    // const [loading, setloading] = useState(false);
+  
+    // const searchData = async (params) => {
+    //   setError("");
+    //   setloading(true);
+    //   try {
+    //     const searchResult = await recipesApi.get(params);
+    //     setSearchRecipes(searchResult.data.results);
+    //     setloading(false);
+    //     if (searchResult.data.results.length === 0) {
+    //       setError({
+    //         message: "Data yang Anda cari tidak ditemukan.",
+    //       });
+    //     }
+    //   } catch (error) {
+    //     setError(error);
+    //     setloading(false);
+    //   }
+    // };
+  
+    // const submitHandler = () => {
+    //   if (query === "") {
+    //     setError({ message: "Isi kata kunci terlebih dahulu!." });
+    //   } else {
+    //     searchData(`/search/?q=${query}`);
+    //   }
+    // };
+    const submitHandler = (e) => {
+		e.preventDefault();
+		navigate("/search/?q=" + inputSearch);
+	};
+
+    return (
+        <>
+        <form
+            onSubmit={submitHandler}
+            className="bg-gray-200 rounded-full flex items-center mr-4 ml-4 px-2 w-[400px] sm:w-[600px] lg:w-[700px]"
+        >
+        <SearchOutlined />
+        <input
+          value={inputSearch}
+          onChange={(e) => setInputSearch(e.target.value)}
+          type="text"
+          className="bg-transparent p-2 w-full focus:outline-none text-black"
+          placeholder="Search Recipe"
+        />
+        </form>
+        {/* {error && (
+            <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                {error.message}
+            </Alert>
+            )}
+            <SearchRecipe result={searchRecipes} loading={loading} /> */}
+      </>
+    )
+}
+export default SearchInput;
+
+
 // import * as React from "react";
 // import { styled, alpha } from "@mui/material/styles";
 // import { InputBase, Box } from "@mui/material";

@@ -8,8 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-
-const Banner = ({data}) => {
+const Banner = () => {
     const img = "https://img.freepik.com/free-photo/concept-cooking-cake-pie-top-view_185193-80492.jpg?w=1380&t=st=1659505037~exp=1659505637~hmac=fec387f12c27145178d3cd0daeb8b7925d366b31ea12e91f0e26011668355221"
 
   return (
@@ -22,14 +21,12 @@ const Banner = ({data}) => {
     <Card
       sx={{
         marginY: 5,
-        // boxShadow: "none",
         background: "#f6dbf3",
         borderRadius: "10px",
         minHeight: "400px",
         display: "flex",
         width: "100%",
       }}
-      
     >
       <Box sx={{ display: "flex", flexDirection: "column", padding: 2 }}>
         <CardContent sx={{ flex: "1 0 auto", justifyContent: "center" }}>
@@ -42,33 +39,8 @@ const Banner = ({data}) => {
               Mudah diikuti dan diterapkan siapa saja<br/>
               Tidak harus menjadi koki profesional untuk bisa memasak
             </Typography>
-            {/* <Stack direction="row" spacing={2}>
-              <Chip sx={{
-                  background: "lightpink"
-              }}
-                icon={<ThumbUpOffAltOutlined/>} label={data.dificulty} />
-              <Chip sx={{
-                  background: "lightpink"
-              }}
-              icon={<RestaurantMenuOutlined />} label={data.portion} />
-              <Chip sx={{
-              background: "lightpink"
-              }}
-              icon={<AccessTimeFilledOutlined />} label={data.times} />
-            </Stack> */}
           </Stack>
         </CardContent>
-        {/* <CardActions>
-          <Stack
-            sx={{ width: "100%", paddingX: 1 }}
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            flexWrap="wrap"
-            rowGap={2}
-          >
-          </Stack>
-        </CardActions> */}
       </Box>
       <CardMedia
         component="img"
